@@ -25,7 +25,8 @@ namespace FoodMenu_RazorPages
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation(); // Hot reload enabled for .NET 3.0
             services.AddDbContext<ApplicationDbContext>(
                 opts => opts.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")
