@@ -28,6 +28,7 @@ namespace FoodMenu_RazorPages.Pages.Categories
             {
                 _db.Category.Remove(categoryFromDB);
                 await _db.SaveChangesAsync();
+                TempData["success"] = "Category deleted successfully.";
                 return RedirectToPage("Index");
             }
             return Page();
