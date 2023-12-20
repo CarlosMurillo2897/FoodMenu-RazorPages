@@ -3,7 +3,7 @@ using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
-namespace FoodMenu_RazorPages.Pages.Categories
+namespace FoodMenu_RazorPages.Pages.Admin.Categories
 {
     public class IndexModel : PageModel
     {

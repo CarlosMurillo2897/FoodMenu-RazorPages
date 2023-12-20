@@ -17,4 +17,8 @@
     <ProjectReference Include="..\FoodMenu.DataAccess\FoodMenu.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Customer\" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,8 @@
 ﻿@page
-@model FoodMenu_RazorPages.Pages.Categories.EditModel
+@model FoodMenu_RazorPages.Pages.Admin.Categories.DeleteModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Delete";
 }
 
 <form action="" method="post">
@@ -10,22 +10,19 @@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary pl-3">
-                Edit Category
+                Delete Category
                 <hr>
             </h2>
         </div>
-        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="mb-3">
             <label asp-for="Category.Name"></label>
-            <input asp-for="Category.Name" class="form-control" />
-            <span asp-validation-for="Category.Name" class="text-danger"></span>
+            <input asp-for="Category.Name" disabled class="form-control" />
         </div>
         <div class="mb-3">
             <label asp-for="Category.DisplayOrder"></label>
-            <input asp-for="Category.DisplayOrder" class="form-control" />
-            <span asp-validation-for="Category.DisplayOrder" class="text-danger"></span>
+            <input asp-for="Category.DisplayOrder" disabled class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 150px;">Update</button>
+        <button type="submit" class="btn btn-danger" style="width: 150px;">Delete</button>
         <a asp-page="Index" class="btn btn-secondary" style="width: 150px;">Back to List</a>
     </div>
 </form>

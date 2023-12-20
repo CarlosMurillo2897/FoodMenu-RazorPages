@@ -2,16 +2,15 @@ using FoodMenu.DataAccess.Data;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace FoodMenu_RazorPages.Pages.Categories
+namespace FoodMenu_RazorPages.Pages.Admin.Categories
 {
     [BindProperties]
-    public class EditModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly ApplicationDbContext _db;
-        public EditModel(ApplicationDbContext db)
+        public DeleteModel(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -23,15 +22,12 @@ namespace FoodMenu_RazorPages.Pages.Categories
 
         public async Task<IActionResult> OnPost()
         {
-            if(Category.Name == Category.DisplayOrder.ToString())
+            var categoryFromDB = _db.Category.Find(Category.ID);
+            if(categoryFromDB != null)
             {
-                ModelState.AddModelError("Category.Name", "The Display Order cannot exactly match the Name.");
-            }
-            if(ModelState.IsValid)
-            {
-                _db.Category.Update(Category);
+                _db.Category.Remove(categoryFromDB);
                 await _db.SaveChangesAsync();
-                TempData["success"] = "Category updated successfully.";
+                TempData["success"] = "Category deleted successfully.";
                 return RedirectToPage("Index");
             }
             return Page();
