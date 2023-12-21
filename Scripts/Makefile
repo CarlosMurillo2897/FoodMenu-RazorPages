@@ -14,8 +14,8 @@ ServerName := localhost
 ServiceName := com.docker.service
 CommandPath := /opt/mssql-tools/bin/sqlcmd
 
-StartupProject := ..\FoodMenu-RazorPages
-DataAccessProject := ..\FoodMenu.DataAccess
+StartupProject := ../FoodMenu-RazorPages
+DataAccessProject := ../FoodMenu.DataAccess
 
 # Definition: Get Arguments, after getting first command.
 RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -48,17 +48,17 @@ docker_run:
 	DOCKER start $(ContainerName)
 
 docker_service:
-	@ECHO Enable Docker Service.
+	@ECHO Enable Docker Service (Windows Only).
 	NET start $(ServiceName)
 
 docker_sql:
 	@ECHO Connect to MSSQL and execute query if arguments provided.
-	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -q "$(RUN_ARGS)"
+	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -Q "$(RUN_ARGS)"
 
 ######## Dotnet commands execution.
 watch:
 	@ECHO Quick-reload Project.
-	DOTNET watch --project $(StartupProject)
+	dotnet watch --project $(StartupProject) run
 
 restore:
 	@ECHO Restore and Install dotnet-ef in order to help with EF Core.
