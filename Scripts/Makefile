@@ -43,15 +43,15 @@ commands:
 
 ######## Docker commands execution. 
 
+docker_service:
+	@ECHO Enable Docker Service (Windows Only).
+	NET start $(ServiceName)
+	
 docker_run:
 	@ECHO Run Docker.
 	DOCKER start $(ContainerName)
 
-docker_service:
-	@ECHO Enable Docker Service (Windows Only).
-	NET start $(ServiceName)
-
-docker_sql:
+docker_sql: docker_run
 	@ECHO Connect to MSSQL and execute query if arguments provided.
 	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -Q "$(RUN_ARGS)"
 
