@@ -1,4 +1,4 @@
-using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -7,17 +7,17 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ICategoryRepository _dbCategory;
+        public IndexModel(ICategoryRepository dbCategory)
+        {
+            _dbCategory = dbCategory;
+        }
         public IEnumerable<Category> Categories { get; set; }
 
-        public IndexModel(ApplicationDbContext db)
-        {
-            _db = db;
-        }
 
         public void OnGet()
         {
-            Categories = _db.Category;
+            Categories = _dbCategory.GetAll();
         }
     }
 }

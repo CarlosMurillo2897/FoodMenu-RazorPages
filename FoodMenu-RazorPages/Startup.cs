@@ -1,15 +1,12 @@
 using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository;
+using FoodMenu.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FoodMenu_RazorPages
 {
@@ -27,6 +24,7 @@ namespace FoodMenu_RazorPages
         {
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation(); // Hot reload enabled for .NET 3.0
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddDbContext<ApplicationDbContext>(
                 opts => opts.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")

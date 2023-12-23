@@ -1,4 +1,4 @@
-using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,10 +9,10 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
     [BindProperties]
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
-        public CreateModel(ApplicationDbContext db)
+        private readonly ICategoryRepository _dbCategory;
+        public CreateModel(ICategoryRepository dbCategory)
         {
-            _db = db;
+            _dbCategory = dbCategory;
         }
         public Category Category { get; set; }
         public void OnGet()
@@ -27,8 +27,7 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
             }
             if(ModelState.IsValid)
             {
-                await _db.Category.AddAsync(Category);
-                await _db.SaveChangesAsync();
+                _dbCategory.Add(Category);
                 TempData["success"] = "Category created successfully.";
                 return RedirectToPage("Index");
             }
