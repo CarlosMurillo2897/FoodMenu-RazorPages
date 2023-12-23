@@ -1,4 +1,5 @@
 using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,15 +10,15 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
     [BindProperties]
     public class EditModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
-        public EditModel(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public EditModel(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public Category Category { get; set; }
         public void OnGet(int id)
         {
-            Category = _db.Category.Find(id);
+            Category = _unitOfWork.Category.GetFirstOrDefault(u => u.ID == id);
         }
 
         public async Task<IActionResult> OnPost()
@@ -28,8 +29,8 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
             }
             if(ModelState.IsValid)
             {
-                _db.Category.Update(Category);
-                await _db.SaveChangesAsync();
+                _unitOfWork.Category.Update(Category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully.";
                 return RedirectToPage("Index");
             }

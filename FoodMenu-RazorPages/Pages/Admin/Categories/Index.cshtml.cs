@@ -7,17 +7,17 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly ICategoryRepository _dbCategory;
-        public IndexModel(ICategoryRepository dbCategory)
+        private readonly IUnitOfWork _unitOfWork;
+        public IndexModel(IUnitOfWork unitOfWork)
         {
-            _dbCategory = dbCategory;
+            _unitOfWork = unitOfWork;
         }
         public IEnumerable<Category> Categories { get; set; }
 
 
         public void OnGet()
         {
-            Categories = _dbCategory.GetAll();
+            Categories = _unitOfWork.Category.GetAll();
         }
     }
 }

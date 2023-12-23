@@ -24,7 +24,7 @@ namespace FoodMenu_RazorPages
         {
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation(); // Hot reload enabled for .NET 3.0
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<ApplicationDbContext>(
                 opts => opts.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")

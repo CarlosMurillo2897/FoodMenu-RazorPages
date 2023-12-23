@@ -1,4 +1,5 @@
 using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,24 +10,24 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
     [BindProperties]
     public class DeleteModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
-        public DeleteModel(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public DeleteModel(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public Category Category { get; set; }
         public void OnGet(int id)
         {
-            Category = _db.Category.Find(id);
+            Category = _unitOfWork.Category.GetFirstOrDefault(u => u.ID == id);
         }
 
         public async Task<IActionResult> OnPost()
         {
-            var categoryFromDB = _db.Category.Find(Category.ID);
-            if(categoryFromDB != null)
+            var categoryFromDB = _unitOfWork.Category.GetFirstOrDefault(u => u.ID == Category.ID);
+            if (categoryFromDB != null)
             {
-                _db.Category.Remove(categoryFromDB);
-                await _db.SaveChangesAsync();
+                _unitOfWork.Category.Remove(categoryFromDB);
+                _unitOfWork.Save();
                 TempData["success"] = "Category deleted successfully.";
                 return RedirectToPage("Index");
             }

@@ -9,10 +9,10 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
     [BindProperties]
     public class CreateModel : PageModel
     {
-        private readonly ICategoryRepository _dbCategory;
-        public CreateModel(ICategoryRepository dbCategory)
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateModel(IUnitOfWork unitOfWork)
         {
-            _dbCategory = dbCategory;
+            _unitOfWork = unitOfWork;
         }
         public Category Category { get; set; }
         public void OnGet()
@@ -27,7 +27,8 @@ namespace FoodMenu_RazorPages.Pages.Admin.Categories
             }
             if(ModelState.IsValid)
             {
-                _dbCategory.Add(Category);
+                _unitOfWork.Category.Add(Category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully.";
                 return RedirectToPage("Index");
             }
