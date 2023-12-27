@@ -1,9 +1,12 @@
 using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,9 +16,11 @@ namespace FoodMenu_RazorPages.Pages.Admin.MenuItems
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpsertModel(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public UpsertModel(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
             MenuItem = new MenuItem();
         }
         public MenuItem MenuItem { get; set; }
@@ -29,7 +34,26 @@ namespace FoodMenu_RazorPages.Pages.Admin.MenuItems
 
         public async Task<IActionResult> OnPost()
         {
-            return Page();
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            var files = HttpContext.Request.Form.Files;
+            if(MenuItem.ID == 0 ) {
+                string newFileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(webRootPath, @"images\MenuItems");
+                var extension = Path.GetExtension(files[0].FileName);
+                var fullPath = Path.Combine(uploads, newFileName + extension);
+
+                using(var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+                MenuItem.Image = $@"\images\MenuItems\{newFileName}{extension}";
+                _unitOfWork.MenuItem.Add(MenuItem);
+                _unitOfWork.Save();
+            } else
+            {
+
+            }
+            return RedirectToPage("./Index");
         }
     }
 }
