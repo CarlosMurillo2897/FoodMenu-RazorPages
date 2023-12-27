@@ -28,13 +28,13 @@ RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
 commands:
 	@ECHO === DOTNET shortcuts available ===
-	@ECHO restore: Restore tools defined in manifest file.
-	@ECHO watch: Quick reload for $(StartupProject) project.
+	@ECHO dotnet_restore: Restore tools defined in manifest file.
+	@ECHO dotnet_watch: Quick reload for $(StartupProject) project.
 	
 	@ECHO === DOCKER shortcuts available ===
 	@ECHO docker_run: Start Container.
 	@ECHO docker_service: Start Docker Service.
-	@ECHO docker_connect: Execute SQL commands, if provided, then get into SQL cmd.
+	@ECHO docker_sql: Execute SQL commands, if provided, then get into SQL cmd.
 
 	@ECHO === Entity Frameworks shortcuts available ===
 	@ECHO db_drop: Drop DB.
@@ -56,11 +56,11 @@ docker_sql: docker_run
 	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -Q "$(RUN_ARGS)"
 
 ######## Dotnet commands execution.
-watch:
+dotnet_watch:
 	@ECHO Quick-reload Project.
 	dotnet watch --project $(StartupProject) run
 
-restore:
+dotnet_restore:
 	@ECHO Restore and Install dotnet-ef in order to help with EF Core.
 	DOTNET tool restore
 
