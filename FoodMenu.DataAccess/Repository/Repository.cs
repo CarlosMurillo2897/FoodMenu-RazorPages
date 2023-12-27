@@ -23,9 +23,13 @@ namespace FoodMenu.DataAccess.Repository
             DbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(params string[] incluedProperties)
         {
             IQueryable<T> query = DbSet;
+            foreach (var property in incluedProperties)
+            {
+                query = query.Include(property);
+            }
             return query.ToList();
         }
 

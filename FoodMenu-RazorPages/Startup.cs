@@ -56,6 +56,7 @@ namespace FoodMenu_RazorPages
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
