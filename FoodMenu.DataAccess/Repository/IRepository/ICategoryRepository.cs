@@ -1,7 +1,4 @@
 ﻿using FoodMenu.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FoodMenu.DataAccess.Repository.IRepository
 {

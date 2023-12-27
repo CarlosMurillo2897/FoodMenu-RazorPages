@@ -1,4 +1,5 @@
 using FoodMenu.DataAccess.Data;
+using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,10 +10,10 @@ namespace FoodMenu_RazorPages.Pages.Admin.FoodTypes
     [BindProperties]
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
-        public CreateModel(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateModel(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public FoodType FoodType { get; set; }
         public void OnGet()
@@ -23,8 +24,8 @@ namespace FoodMenu_RazorPages.Pages.Admin.FoodTypes
         {
             if(ModelState.IsValid)
             {
-                await _db.FoodType.AddAsync(FoodType);
-                await _db.SaveChangesAsync();
+                _unitOfWork.FoodType.Add(FoodType);
+                _unitOfWork.Save();
                 TempData["success"] = "Food Type created successfully.";
                 return RedirectToPage("Index");
             }
