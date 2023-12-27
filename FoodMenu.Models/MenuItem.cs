@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodMenu.Models
 {
@@ -13,8 +12,10 @@ namespace FoodMenu.Models
         public string Image { get; set; }
         [Range(0, 1000, ErrorMessage = "Price should be between $1 and $1000.")]
         public double Price { get; set; }
+        [Display(Name = "Food Type")]
         public int FoodTypeID { get; set; }
         public FoodType FoodType { get; set; }
+        [Display(Name = "Category")]
         public int CategoryID { get; set; }
         public Category Category { get; set; }
     }
