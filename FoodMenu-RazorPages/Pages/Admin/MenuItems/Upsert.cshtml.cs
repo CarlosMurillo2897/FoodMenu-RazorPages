@@ -26,8 +26,12 @@ namespace FoodMenu_RazorPages.Pages.Admin.MenuItems
         public MenuItem MenuItem { get; set; }
         public IEnumerable<SelectListItem> CategoryList { get; set; }
         public IEnumerable<SelectListItem> FoodTypeList { get; set; }
-        public void OnGet()
+        public void OnGet(int? id)
         {
+            if(id != null)
+            {
+                MenuItem = _unitOfWork.MenuItem.GetFirstOrDefault(u => u.ID == id);
+            }
             CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem(i.Name, i.ID.ToString()));
             FoodTypeList = _unitOfWork.FoodType.GetAll().Select(i => new SelectListItem(i.Name, i.ID.ToString()));
         }
