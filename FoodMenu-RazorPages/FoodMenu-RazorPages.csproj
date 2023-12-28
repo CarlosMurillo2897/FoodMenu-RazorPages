@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodMenu.DataAccess\FoodMenu.DataAccess.csproj" />
+    <ProjectReference Include="..\FoodMenu.Utilities\FoodMenu.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

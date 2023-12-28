@@ -1,5 +1,6 @@
 using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
+using FoodMenu.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,25 +39,27 @@ namespace FoodMenu_RazorPages.Pages.Admin.MenuItems
 
         public async Task<IActionResult> OnPost()
         {
-            string webRootPath = _webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
+            var fileHelper = new FileHelper(_webHostEnvironment.WebRootPath);
+            
             if(MenuItem.ID == 0 ) {
-                string newFileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, @"images\MenuItems");
-                var extension = Path.GetExtension(files[0].FileName);
-                var fullPath = Path.Combine(uploads, newFileName + extension);
-
-                using(var fileStream = new FileStream(fullPath, FileMode.Create))
+                var imagePath = fileHelper.CopyFile(files);
+                MenuItem.Image = imagePath;
+                _unitOfWork.MenuItem.Add(MenuItem); 
+            } else {
+                var objFromDB = _unitOfWork.MenuItem.GetFirstOrDefault(u => u.ID == MenuItem.ID);
+                
+                if(files.Count > 0)
                 {
-                    files[0].CopyTo(fileStream);
+                    fileHelper.RemoveFile(objFromDB.Image);
+                    var imagePath = fileHelper.CopyFile(files);
+                    objFromDB.Image = imagePath;
                 }
-                MenuItem.Image = $@"\images\MenuItems\{newFileName}{extension}";
-                _unitOfWork.MenuItem.Add(MenuItem);
-                _unitOfWork.Save();
-            } else
-            {
 
+                _unitOfWork.MenuItem.Update(objFromDB);
             }
+            _unitOfWork.Save();
+            
             return RedirectToPage("./Index");
         }
     }
