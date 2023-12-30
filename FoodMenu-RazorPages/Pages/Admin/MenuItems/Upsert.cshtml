@@ -2,8 +2,8 @@
 @model FoodMenu_RazorPages.Pages.Admin.MenuItems.UpsertModel
 
 @{
-    ViewData["Title"] = "Create";
     var action = Model.MenuItem.ID == 0 ? "Create" : "Update";
+    ViewData["Title"] = $"{action} Menu Item";
 }
 
 <form action="" method="post" enctype="multipart/form-data">
@@ -56,12 +56,25 @@
                 }
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 150px;">@action</button>
+        <button type="submit" onclick="validateInput(@Model.MenuItem.ID)" class="btn btn-primary" style="width: 150px;">@action</button>
         <a asp-page="Index" class="btn btn-secondary" style="width: 150px;">Back to List</a>
     </div>
 </form>
 
 @section Scripts{
+    <script>
+        function validateInput(id) {
+            if (document.getElementById('uploadBox').value === '' && id === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops..',
+                    text: 'Please upload an Image.',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }
