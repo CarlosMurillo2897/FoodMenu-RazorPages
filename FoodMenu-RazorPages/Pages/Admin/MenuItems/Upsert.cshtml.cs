@@ -54,6 +54,9 @@ namespace FoodMenu_RazorPages.Pages.Admin.MenuItems
                     fileHelper.RemoveFile(objFromDB.Image);
                     var imagePath = fileHelper.CopyFile(files);
                     objFromDB.Image = imagePath;
+                } else
+                {
+                    MenuItem.Image = objFromDB.Image;
                 }
 
                 _unitOfWork.MenuItem.Update(objFromDB);

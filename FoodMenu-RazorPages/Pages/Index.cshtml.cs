@@ -17,9 +17,9 @@ namespace FoodMenu_RazorPages.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            return RedirectToPage("Customer/Home/Index");
         }
     }
 }
