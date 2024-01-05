@@ -23,22 +23,34 @@ namespace FoodMenu.DataAccess.Repository
             DbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll(params string[] incluedProperties)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, params string[] includeProperties)
         {
             IQueryable<T> query = DbSet;
-            foreach (var property in incluedProperties)
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            foreach (var property in includeProperties)
             {
                 query = query.Include(property);
+            }
+            if(orderBy != null)
+            {
+                return orderBy(query).ToList();
             }
             return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null)
+        public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, params string[] includeProperties)
         {
             IQueryable<T> query = DbSet;
             if(filter != null)
             {
                 query = query.Where(filter);
+            }
+            foreach (var property in includeProperties)
+            {
+                query = query.Include(property);
             }
             return query.FirstOrDefault();
         }

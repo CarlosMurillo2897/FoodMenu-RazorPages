@@ -2,6 +2,7 @@ using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodMenu_RazorPages.Pages.Customer.Home
 {
@@ -17,8 +18,8 @@ namespace FoodMenu_RazorPages.Pages.Customer.Home
 
         public void OnGet()
         {
-            MenuItemList = _unitOfWork.MenuItem.GetAll("Category", "FoodType");
-            CategoryList = _unitOfWork.Category.GetAll();
+            MenuItemList = _unitOfWork.MenuItem.GetAll(includeProperties: new[] { nameof(Category), nameof(FoodType) });
+            CategoryList = _unitOfWork.Category.GetAll(orderBy: x => x.OrderBy(c => c.DisplayOrder) );
         }
     }
 }

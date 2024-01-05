@@ -21,7 +21,7 @@ namespace FoodMenu_RazorPages.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var menuItemList = _unitOfWork.MenuItem.GetAll(nameof(Category), nameof(FoodType));
+            var menuItemList = _unitOfWork.MenuItem.GetAll(includeProperties: new[] { nameof(Category), nameof(FoodType) });
             return Json(new
             {
                 data = menuItemList
