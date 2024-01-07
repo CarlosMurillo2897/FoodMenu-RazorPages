@@ -26,7 +26,9 @@
                                 <div class="col-12 pt-2" style="font-size: 13px; text-align: justify">
                                     <p>@menuItem.Description</p>
                                 </div>
-                                <div class="col-12 p-1"><a href="" class="btn btn-dark form-control btn-sm p-2" style="height: 40px">View Details</a></div>
+                                <div class="col-12 p-1">
+                                    <a asp-page="Details" asp-route-id="@menuItem.ID" class="btn btn-dark form-control btn-sm p-2" style="height: 40px">View Details</a>
+                                </div>
                             </div>
                         </div>
                     </div>
