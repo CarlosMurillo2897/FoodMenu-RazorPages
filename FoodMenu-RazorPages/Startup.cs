@@ -1,9 +1,11 @@
 using FoodMenu.DataAccess.Data;
 using FoodMenu.DataAccess.Repository;
 using FoodMenu.DataAccess.Repository.IRepository;
+using FoodMenu.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,15 +27,19 @@ namespace FoodMenu_RazorPages
         {
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation(); // Hot reload enabled for .NET 3.0
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+
             services.AddDbContext<ApplicationDbContext>(
                 opts => opts.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")
                 )
             );
             services
-                .AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
