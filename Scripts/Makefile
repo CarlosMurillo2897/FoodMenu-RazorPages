@@ -14,6 +14,10 @@ ServerName := localhost
 ServiceName := com.docker.service
 CommandPath := /opt/mssql-tools/bin/sqlcmd
 
+DatabaseName := FoodMenu
+MSSQLPath := /var/opt/mssql/
+BackupFile := backup.bak
+
 StartupProject := ../FoodMenu-RazorPages
 DataAccessProject := ../FoodMenu.DataAccess
 
@@ -53,7 +57,18 @@ docker_run:
 
 docker_sql: docker_run
 	@ECHO Connect to MSSQL and execute query if arguments provided.
-	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -Q "$(RUN_ARGS)"
+	DOCKER exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P $(UserPassword) -d $(DatabaseName) -Q "$(RUN_ARGS)"
+
+docker_backup:
+	@ECHO Creating DB backup.
+	DOCKER exec -it $(ContainerName) $(CommandPath) -b -V16 -S $(ServerName) -U $(UserName) -P $(UserPassword) -Q "BACKUP DATABASE [$(DatabaseName)] TO DISK = N'$(MSSQLPath)backups/$(BackupFile)' with NOFORMAT, NOINIT, NAME = '$(DatabaseName)-full', SKIP, NOREWIND, NOUNLOAD, STATS = 10"
+	DOCKER cp $(ContainerName):$(MSSQLPath)backups/$(BackupFile) ./$(BackupFile)
+
+docker_restore:
+	@ECHO Restoring DB backup.
+	docker exec $(ContainerName) mkdir -p $(MSSQLPath)/restores
+	docker cp "./$(BackupFile)" "$(ContainerName):$(MSSQLPath)restores/$(BackupFile)"
+	docker exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -Q "RESTORE DATABASE [$(DatabaseName)] FROM DISK = N'$(MSSQLPath)/restores/$(BackupFile)' WITH FILE = 1, NOUNLOAD, REPLACE, RECOVERY, STATS = 5"
 
 ######## Dotnet commands execution.
 dotnet_watch:
