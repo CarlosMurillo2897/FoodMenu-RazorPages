@@ -68,7 +68,7 @@ docker_restore:
 	@ECHO Restoring DB backup.
 	docker exec $(ContainerName) mkdir -p $(MSSQLPath)/restores
 	docker cp "./$(BackupFile)" "$(ContainerName):$(MSSQLPath)restores/$(BackupFile)"
-	docker exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -Q "RESTORE DATABASE [$(DatabaseName)] FROM DISK = N'$(MSSQLPath)/restores/$(BackupFile)' WITH FILE = 1, NOUNLOAD, REPLACE, RECOVERY, STATS = 5"
+	docker exec -it $(ContainerName) $(CommandPath) -S $(ServerName) -U $(UserName) -P ${UserPassword} -Q "RESTORE DATABASE [$(DatabaseName)] FROM DISK = N'$(MSSQLPath)/restores/$(BackupFile)' WITH FILE = 1, NOUNLOAD, REPLACE, RECOVERY, STATS = 5"
 
 ######## Dotnet commands execution.
 dotnet_watch:
