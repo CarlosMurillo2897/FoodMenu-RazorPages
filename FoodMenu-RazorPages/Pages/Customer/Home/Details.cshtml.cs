@@ -3,6 +3,7 @@ using FoodMenu.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace FoodMenu_RazorPages.Pages.Customer.Home
 {
@@ -18,10 +19,26 @@ namespace FoodMenu_RazorPages.Pages.Customer.Home
         }
         public void OnGet(int id)
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             ShoppingCart = new ShoppingCart()
             {
-                MenuItem = _unitOfWork.MenuItem.GetFirstOrDefault(x => x.ID == id, includeProperties: new[] { nameof(Category), nameof(FoodType) })
+                ApplicationUserID = claim.Value,
+                MenuItem = _unitOfWork.MenuItem.GetFirstOrDefault(x => x.ID == id, includeProperties: new[] { nameof(Category), nameof(FoodType) }),
+                MenuItemID = id
             };
+        }
+        public IActionResult OnPost()
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.ShoppingCart.Add(ShoppingCart);
+                _unitOfWork.Save();
+
+                return RedirectToPage("Index");
+            }
+            return Page();
         }
     }
 }
