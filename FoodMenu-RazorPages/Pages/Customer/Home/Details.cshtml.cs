@@ -33,7 +33,16 @@ namespace FoodMenu_RazorPages.Pages.Customer.Home
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.ShoppingCart.Add(ShoppingCart);
+                ShoppingCart shoppingCartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(
+                    x => x.ApplicationUserID == ShoppingCart.ApplicationUserID && x.MenuItemID == ShoppingCart.MenuItemID
+                );
+
+                if(shoppingCartFromDB == null ) {
+                    _unitOfWork.ShoppingCart.Add(ShoppingCart);
+                } else
+                {
+                    _unitOfWork.ShoppingCart.IncrementCount(shoppingCartFromDB, ShoppingCart.Count);
+                }
                 _unitOfWork.Save();
 
                 return RedirectToPage("Index");

@@ -10,22 +10,22 @@ namespace FoodMenu.DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        internal DbSet<T> DbSet;
+        internal DbSet<T> dbSet;
         private readonly ApplicationDbContext _db;
         public Repository(ApplicationDbContext db)
         {
             _db = db;
-            this.DbSet = db.Set<T>();
+            this.dbSet = db.Set<T>();
         }
 
         public void Add(T entity)
         {
-            DbSet.Add(entity);
+            dbSet.Add(entity);
         }
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, params string[] includeProperties)
         {
-            IQueryable<T> query = DbSet;
+            IQueryable<T> query = dbSet;
             if (filter != null)
             {
                 query = query.Where(filter);
@@ -43,7 +43,7 @@ namespace FoodMenu.DataAccess.Repository
 
         public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, params string[] includeProperties)
         {
-            IQueryable<T> query = DbSet;
+            IQueryable<T> query = dbSet;
             if(filter != null)
             {
                 query = query.Where(filter);
@@ -57,12 +57,12 @@ namespace FoodMenu.DataAccess.Repository
 
         public void Remove(T entity)
         {
-            DbSet.Remove(entity);
+            dbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-            DbSet.RemoveRange(entities);
+            dbSet.RemoveRange(entities);
         }
     }
 }
