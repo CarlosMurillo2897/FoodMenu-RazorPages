@@ -7,6 +7,11 @@
 
 <form action="" method="post">
     <br />
+    @if(Model.ShoppingCartList.Count() == 0)
+    {
+        <div>Please add items to Shopping Cart.</div>
+    }
+    else{
     <div class="container">
         <div class="card">
             <div class="card-header bg-dark text-light ml-0">
@@ -15,7 +20,7 @@
                         Shopping Cart
                     </div>
                     <div class="col-6 text-end">
-                        <a href="" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                        <a href="~/Customer/Home/Index" class="btn btn-outline-info btn-sm">Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -39,15 +44,15 @@
                                 </h6>
                         </div>
                         <div class="col-6 col-sm-4 col-lg-6">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" asp-page-handler="plus" asp-route-cartID="@item.ID">
                                 <i class="bi bi-plus-square"></i>
                             </button>
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger" asp-page-handler="minus" asp-route-cartID="@item.ID">
                                 <i class="bi bi-dash-square"></i>
                             </button>
                         </div>
                         <div class="col-2 col-sm-4 col-lg-2 text-right">
-                            <button type="submit" class="btn btn-outline-danger">
+                            <button type="submit" class="btn btn-outline-danger" asp-page-handler="remove" asp-route-cartID="@item.ID">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </div>
@@ -63,7 +68,7 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between bg-light">
                                 <span class="text-info">Total (USD)</span>
-                                <strong class="text-info">$</strong>
+                                <strong class="text-info">$@Model.CartTotal</strong>
                             </li>
                         </ul>
                     </div>
@@ -71,11 +76,12 @@
             </div>
             <div class="card-footer">
                 <div class="col-12 col-lg-4 offset-lg-8 col-md-6 offset-md-6">
-                    <a href="" class="btn btn-success form-control">Summary</a>
+                    <a asp-page="Summary" class="btn btn-success form-control">Summary</a>
                 </div>
             </div>
         </div>
     </div>
+    }
 </form>
 
 <style>

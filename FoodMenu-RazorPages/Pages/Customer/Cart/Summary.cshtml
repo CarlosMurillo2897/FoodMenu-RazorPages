@@ -1,0 +1,107 @@
+﻿@page
+@model FoodMenu_RazorPages.Pages.Customer.Cart.SummaryModel
+@{
+    ViewData["Title"] = "Summary";
+}
+
+<form action="" method="post">
+    <br />
+    <div class="backgroundWhiteBorder">
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0">
+                    <div class="row">
+                        <div class="col-6 pt-2">
+                            <h3 class="text-white-50">Order Summary</h3>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a href="" class="btn btn-outline-info btn-sm">Back to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container rounded p-2">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 pb-4">
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3"><span class="text-info">Pickup Details</span></h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label for="">Name</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label for="">Phone Number</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label for="">Pickup Date</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="date" name="" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label for="">Pickup Time</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="time" name="" id="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label for="">Additional Instructions:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <textarea name="" id="" class="form-control h-100px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-5 offset-lg-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Order Summary:</span>
+                                </h4>
+                                <ul class="list-group mb">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-0">Name</h6>
+                                            <small class="text-muted">Quantity: Count</small>
+                                        </div>
+                                        <span class="text-muted">$Price * Count</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <small class="text-info">Total (USD)</small>
+                                        <strong class="text-info">$</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-4 offset-md-8">
+                            <button type="submit" id="btnPlaceOrder" value="Place Order" class="btn btn-success form-control">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .h-100px {
+        height: 100px;
+    }
+</style>
