@@ -1,6 +1,10 @@
 ﻿@page
 @model FoodMenu_RazorPages.Pages.Customer.Home.DetailsModel
 
+@{
+    ViewData["Title"] = "Details";
+}
+
 <div>
     <form action="" method="post">
         <input asp-for="ShoppingCart.MenuItemID" hidden />
