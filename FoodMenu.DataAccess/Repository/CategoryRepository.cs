@@ -13,11 +13,11 @@ namespace FoodMenu.DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Category category)
+        public void Update(Category obj)
         {
-            var objFromDB = _db.Category.FirstOrDefault(u => u.ID == category.ID);
-            objFromDB.Name = category.Name;
-            objFromDB.DisplayOrder = category.DisplayOrder;
+            var objFromDB = _db.Category.FirstOrDefault(u => u.ID == obj.ID);
+            objFromDB.Name = obj.Name;
+            objFromDB.DisplayOrder = obj.DisplayOrder;
         }
     }
 }

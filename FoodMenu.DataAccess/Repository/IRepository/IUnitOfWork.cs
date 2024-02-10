@@ -8,6 +8,8 @@ namespace FoodMenu.DataAccess.Repository.IRepository
         IFoodTypeRepository FoodType { get; }
         IMenuItemRepository MenuItem { get; }
         IShoppingCartRepository ShoppingCart { get; }
+        IOrderHeaderRepository OrderHeader { get; }
+        IOrderDetailsRepository OrderDetails { get; }
         void Save();
     }
 }
