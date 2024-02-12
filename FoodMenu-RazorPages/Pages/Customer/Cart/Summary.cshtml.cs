@@ -1,14 +1,17 @@
 using FoodMenu.DataAccess.Repository.IRepository;
 using FoodMenu.Models;
+using FoodMenu.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace FoodMenu_RazorPages.Pages.Customer.Cart
 {
     [Authorize]
+    [BindProperties]
     public class SummaryModel : PageModel
     {
         public IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
@@ -37,6 +40,46 @@ namespace FoodMenu_RazorPages.Pages.Customer.Cart
                 OrderHeader.PickupName = $"{applicationUser.FirstName} {applicationUser.LastName}";
                 OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
             }
+        }
+
+        public IActionResult OnPost()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
+                    filter: x => x.ApplicationUserID == claim.Value,
+                    includeProperties: new[] { nameof(MenuItem), $"{nameof(MenuItem)}.{nameof(FoodType)}", $"{nameof(MenuItem)}.{nameof(Category)}" }
+                );
+                foreach (var cartItem in ShoppingCartList)
+                {
+                    OrderHeader.OrderTotal += (cartItem.MenuItem.Price * cartItem.Count);
+                }
+                OrderHeader.Status = OrderStatus.StatusPending;
+                OrderHeader.OrderDate = System.DateTime.Now;
+                OrderHeader.UserID = claim.Value;
+                OrderHeader.PickupTime = Convert.ToDateTime($"{OrderHeader.PickupDate.ToShortDateString()} {OrderHeader.PickupTime.ToShortTimeString()}");
+
+                _unitOfWork.OrderHeader.Add(OrderHeader);
+                _unitOfWork.Save();
+
+                foreach (var item in ShoppingCartList)
+                {
+                    OrderDetails orderDetail = new OrderDetails
+                    {
+                        MenuItemID = item.MenuItemID,
+                        OrderID = OrderHeader.ID,
+                        Name = item.MenuItem.Name,
+                        Price = item.MenuItem.Price,
+                        Count = item.Count
+                    };
+                    _unitOfWork.OrderDetails.Add(orderDetail);
+                }
+                _unitOfWork.ShoppingCart.RemoveRange(ShoppingCartList);
+                _unitOfWork.Save();
+            }
+            return RedirectToPage("Index");
         }
     }
 }

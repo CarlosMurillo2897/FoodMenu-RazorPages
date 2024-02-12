@@ -25,13 +25,16 @@ namespace FoodMenu.Models
         public DateTime PickupTime { get; set; }
         [Required]
         [NotMapped]
+        [Display(Name = "Pick Up Date")]
         public DateTime PickupDate { get; set; }
         public string Status { get; set; }
         public string? Comments { get; set; }
         public string? TransactionID { get; set; }
         [Display(Name = "Pickup Name")]
+        [Required]
         public string PickupName { get; set; }
         [Display(Name = "Phone Number")]
+        [Required]
         public string PhoneNumber { get; set; }
     }
 }

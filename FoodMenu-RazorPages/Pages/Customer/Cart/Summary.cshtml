@@ -32,6 +32,7 @@
                                     </div>
                                     <div class="col-9">
                                         <input asp-for="OrderHeader.PickupName" class="form-control">
+                                        <span asp-validation-for="OrderHeader.PickupName" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -40,6 +41,7 @@
                                     </div>
                                     <div class="col-9">
                                         <input asp-for="OrderHeader.PhoneNumber" class="form-control">
+                                        <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -48,6 +50,7 @@
                                     </div>
                                     <div class="col-9">
                                         <input asp-for="OrderHeader.PickupDate" type="date" value="" class="form-control">
+                                        <span asp-validation-for="OrderHeader.PickupDate" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -56,6 +59,7 @@
                                     </div>
                                     <div class="col-9">
                                         <input asp-for="OrderHeader.PickupTime" type="time" value="" class="form-control">
+                                        <span asp-validation-for="OrderHeader.PickupTime" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -107,3 +111,9 @@
         height: 100px;
     }
 </style>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
