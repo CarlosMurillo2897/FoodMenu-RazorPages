@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stripe;
 
 namespace FoodMenu_RazorPages
 {
@@ -36,6 +37,9 @@ namespace FoodMenu_RazorPages
                     Configuration.GetConnectionString("DefaultConnection")
                 )
             );
+
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
             services
                 .AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -66,6 +70,10 @@ namespace FoodMenu_RazorPages
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            string key = Configuration.GetSection("Stripe:SecretKey").Get<string>();
+            StripeConfiguration.ApiKey = key;
+
             app.UseAuthentication();
             app.UseAuthorization();
 

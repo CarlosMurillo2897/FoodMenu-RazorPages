@@ -6,6 +6,10 @@ namespace FoodMenu.Models
 {
     public class ShoppingCart
     {
+        public ShoppingCart()
+        {
+            Count = 1;
+        }
         public int ID { get; set; }
         public int MenuItemID { get; set; }
         [ForeignKey("MenuItemID")]

@@ -29,7 +29,8 @@ namespace FoodMenu.Models
         public DateTime PickupDate { get; set; }
         public string Status { get; set; }
         public string? Comments { get; set; }
-        public string? TransactionID { get; set; }
+        public string? SessionID { get; set; }
+        public string? PaymentIntentID { get; set; }
         [Display(Name = "Pickup Name")]
         [Required]
         public string PickupName { get; set; }
